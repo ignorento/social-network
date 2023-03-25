@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>
+        {% block title %}about{% endblock %}
+    </title>
+</head>
+<body>
+    <div>
+        <b>About:</b>
+        <p></p>
+    </div>
+
+    <div>
+        {% block content %}
+        Welcome to Social Network!
+            <p></p>
+        Now you may Log in or Registered :)
+
+        {% endblock %}
+    </div>
+
+</body>
+</html>
