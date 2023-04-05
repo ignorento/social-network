@@ -21,6 +21,7 @@ class LoginForm(FlaskForm):
     remember = BooleanField("Remember")
     submit = SubmitField("Log In")
 
+
 class RegisterForm(LoginForm):
     email = EmailField("Email", validators=[validators.DataRequired(message="Email is required"), validators.Email()])
     confirm_password = PasswordField(

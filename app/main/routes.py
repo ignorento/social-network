@@ -3,6 +3,7 @@ from app.main import main_bp
 from flask import render_template
 from app.models import User
 
+
 @main_bp.route("/")
 @main_bp.route("/index")
 def index():
@@ -45,6 +46,7 @@ def index():
 
     users = db.session.query(User).all()
     return render_template("index.html", users=users)
+
 
 @main_bp.route("/about")
 def about():
