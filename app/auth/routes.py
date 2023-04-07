@@ -2,7 +2,7 @@ from app.auth import auth_bp
 from flask import render_template, redirect, url_for, flash
 from .forms import LoginForm, RegisterForm
 from flask_login import current_user, login_user, logout_user
-from ..models import User
+from ..models import User, Profile
 from .. import db
 
 
@@ -14,7 +14,7 @@ def index():
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("main.index"))
+        return redirect(url_for("main.profile"))
 
     form = LoginForm()
 
@@ -27,7 +27,7 @@ def login():
 
         login_user(user, remember=form.remember.data)
 
-        return redirect(url_for("main.index"))
+        return redirect(url_for("main.profile"))
 
     return render_template("auth/login.html", form=form)
 
@@ -38,16 +38,40 @@ def register():
         return redirect(url_for("main.index"))
 
     form = RegisterForm()
+
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
+        user = User(
+            username=form.username.data,
+            email=form.email.data
+        )
         user.set_password(form.password.data)
-################################
+
+        username_in_db = User.query.filter_by(username=form.username.data).first()
+        email_in_db = User.query.filter_by(username=form.username.data).first()
+
+        if email_in_db:
+            flash("This email is already registered, please login!", category="error")
+            return render_template("auth/login.html", form=form)
+
+        if username_in_db:
+            flash("This username is taken, please select another!", category="error")
+            return render_template("auth/register.html", form=form)
+
         db.session.add(user)
         db.session.commit()
 
-        # +profile
+        profile = Profile(
+            user_id=user.id,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            linkedin=form.linkedin.data,
+            facebook=form.facebook.data
+        )
 
-        flash(f"Successfully registered! {form.data['username']}", category="success")
+        db.session.add(profile)
+        db.session.commit()
+
+        flash(f"Successfully registered {form.data['username']}! Profile was created", category="success")
 
         return redirect(url_for("auth.login"))
 
