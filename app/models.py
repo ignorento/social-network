@@ -42,8 +42,11 @@ class Profile(db.Model):
         db.ForeignKey("user.id", name="fk_profiles_user_id"),
         nullable=False
     )
-    first_name = db.Column(db.String(100))
-    last_name = db.Column(db.String(100))
+    first_name = db.Column(db.String)
+    last_name = db.Column(db.String)
+    linkedin = db.Column(db.String)
+    facebook = db.Column(db.String)
+
     bio = db.Column(db.String)
 
-    user = db.relationship("User", backref="profile", uselist=False)
+    user = db.relationship("User", backref=db.backref("profile", uselist=False), uselist=False)
