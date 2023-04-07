@@ -2,6 +2,7 @@ from app import db
 from app.main import main_bp
 from flask import render_template
 from app.models import User
+from flask_login import current_user
 
 
 @main_bp.route("/")
@@ -51,3 +52,8 @@ def index():
 @main_bp.route("/about")
 def about():
     return render_template("about.html")
+
+
+@main_bp.route("/profile")
+def profile():
+    return render_template("profile.html", user=current_user)
