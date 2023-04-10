@@ -57,11 +57,11 @@ def users(num):
                 facebook=facebook_url
             )
 
+            # save changes in db
+            # db.session.commit()
             db.session.add(profile)
             db.session.commit()
 
-    # save changes in db
-    # db.session.commit()
     print(num, 'user added.')
     # for me Login
     print(users_pass)
