@@ -24,7 +24,7 @@ def create():
             if not title or len(title) < 2:
                 flash('Title must be at least 3 characters log', category='error')
 
-        #return redirect(url_for("user.blog"))
+        return redirect(url_for("user.blog"))
     return render_template('user/blog.html', title='Create Post', form=form)
 
 
