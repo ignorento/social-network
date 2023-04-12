@@ -14,7 +14,7 @@ def index():
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for("main.profile"))
+        return redirect(url_for("main.index"))
 
     form = LoginForm()
 
@@ -27,7 +27,7 @@ def login():
 
         login_user(user, remember=form.remember.data)
 
-        return redirect(url_for("main.profile"))
+        return redirect(url_for("main.index"))
 
     return render_template("auth/login.html", form=form)
 
