@@ -12,10 +12,6 @@ class BaseModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
 
-class TimestampMixin:
-    created_at = db.Column(db.DateTime, default=datetime)
-
-
 class User(BaseModel, UserMixin):
     __tablename__ = "user"
 
