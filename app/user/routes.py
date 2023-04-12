@@ -21,7 +21,7 @@ def blog():
         .order_by(Post.created_at.desc())
         .all()
     )
-    return render_template("user/blog.html", post=posts, form=form)
+    return render_template("user/blog.html", posts=posts, form=form)
 
 
 @user_bp.route("/profile/<string:username>", methods=['GET', 'POST'])
