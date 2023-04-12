@@ -1,13 +1,14 @@
 from app import db
 from app.main import main_bp
 from flask import render_template
-from app.models import User
-from flask_login import current_user
+from app.models import Post
 
 
 @main_bp.route("/")
 @main_bp.route("/index")
 def index():
+    posts = db.session.query(Post).order_by(Post.created_at.desc()).all()
+    return render_template("index.html", posts=posts)
 
     # users_data = [
     #     {
@@ -45,15 +46,7 @@ def index():
     #     db.session.add(user)
     # db.session.commit()
 
-    users = db.session.query(User).all()
-    return render_template("index.html", users=users)
-
 
 @main_bp.route("/about")
 def about():
     return render_template("about.html")
-
-
-@main_bp.route("/profile")
-def profile():
-    return render_template("profile.html", user=current_user)
