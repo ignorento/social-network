@@ -84,7 +84,7 @@ class Post(BaseModel):
         nullable=False
     )
 
-    like = db.relationship("Like", backref="post", uselist=True, cascade="all,delete")
+    likes = db.relationship("Like", backref="post", uselist=True, cascade="all,delete")
     dislikes = db.relationship("Dislike", backref="post", uselist=True, cascade="all, delete")
 
 
