@@ -61,6 +61,8 @@
             <div class="alert alert-danger">{{ message }}</div>
           {% elif category == "success" %}
             <div class="alert alert-success">{{ message }}</div>
+          {% elif category == "warning" %}
+            <div class="alert alert-warning">{{ message }}</div>
           {% endif %}
         {% endfor %}
       {% endif %}
