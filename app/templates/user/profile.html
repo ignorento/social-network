@@ -3,10 +3,16 @@
 {% block content %}
 
 <div class="container">
-        <p></p>
-        <h1 class="mb-4 ">My Profile</h1>
-        <div class="row">
 
+        {% if user == current_user %}
+        <h2 class="mb-12 ">My Profile</h2>
+        <div class="row">
+            {% else %}
+            <h2 class="mb-12 ">Profile - {{ user.username }}</h2>
+            <div class="row">
+        {% endif %}
+
+            {% if user == current_user %}
             <div class="col-md-4 bg-dark custom-rounded-left text-white p-4">
                 <img src="{{ user.avatar(128) }}" class="img-thumbnail mb-3" alt="">
                 <div>
@@ -15,6 +21,18 @@
                 </div>
                  <p class="small">Last seen: {{ user.profile.last_seen.strftime('%Y-%m-%d %H:%M:%S') }}</p>
             </div>
+
+            {% else %}
+            <div class="col-md-4 bg-dark custom-rounded-left text-white p-4">
+                <img src="{{ user.avatar(128) }}" class="img-thumbnail mb-3" alt="">
+                <div>
+                    <h5>{{ user.username }}</h5>
+                    <p class="text-secondary">{{ user.email }}</p>
+                </div>
+                 <p class="small">Last seen: {{ user.profile.last_seen.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            </div>
+            {% endif %}
+
             <div class="col-md-8 bg-dark custom-rounded-right text-white p-4">
                 {% if user == current_user %}
                 <form method="post" action="{{ url_for('user.profile', username=user.username) }}">
@@ -76,48 +94,53 @@
                     </div>
                     <button type="submit" class="btn btn-secondary">Save</button>
                 </form>
-                {% endif %}
-            </div>
-
-        </div>
-    </div>
-
-<head>
-    <title>My Profile</title>
-    <!-- Подключение CSS-файла Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-    <style>
-        body {
-            background-color: #F0F8FF; /* Задаем цвет фона в формате HEX (#ff0000 - красный) */
-        }
-
-  </style>
-</head>
-<body>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-8 bg-dark custom-rounded text-white p-4">
-                <h2>My Profile</h2>
-                <hr>
-                {% if current_user.is_authenticated %}
-                <p><strong>Login :</strong> {{ current_user.username }} </p>
-                <p><strong>Email :</strong> {{ current_user.email }} </p>
-                <p><strong>First Name :</strong> {{ current_user.profile.first_name }}</p>
-                <p><strong>Last Name :</strong> {{ current_user.profile.last_name }}</p>
-                <p><strong>Linkedin Url :</strong> {{ current_user.profile.linkedin }}</p>
-                <p><strong>Facebook Url :</strong> {{ current_user.profile.facebook }}</p>
                 {% else %}
-        <h5>Please login to view profile!</h5>
+<!--                Если нужно будет вспомнить логин пароль к профайду-->
+<!--                <p><strong>Login :</strong> {{ current_user.username }} </p>-->
+<!--                <p><strong>Email :</strong> {{ current_user.email }} </p>-->
+
+                <p><strong>First Name :</strong> {{ user.profile.first_name }}</p>
+                <p><strong>Last Name :</strong> {{ user.profile.last_name }}</p>
+                <p><strong>Facebook Url :</strong> {{ user.profile.facebook }}</p>
+                <p><strong>Linkedin Url :</strong> {{ user.profile.linkedin }}</p>
+                <p><strong>About Me :</strong> {{ user.profile.bio }}</p>
+
                 {% endif %}
             </div>
+
         </div>
     </div>
-    <!-- Подключение JS-файла Bootstrap (jQuery и Popper.js) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+
+<!--<head>-->
+<!--    <title>My Profile</title>-->
+<!--    &lt;!&ndash; Подключение CSS-файла Bootstrap &ndash;&gt;-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"-->
+<!--          integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div class="container mt-5">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-8 bg-dark custom-rounded text-white p-4">-->
+<!--                <h2>My Profile</h2>-->
+<!--                <hr>-->
+<!--                {% if current_user.is_authenticated %}-->
+<!--                <p><strong>Login :</strong> {{ current_user.username }} </p>-->
+<!--                <p><strong>Email :</strong> {{ current_user.email }} </p>-->
+<!--                <p><strong>First Name :</strong> {{ current_user.profile.first_name }}</p>-->
+<!--                <p><strong>Last Name :</strong> {{ current_user.profile.last_name }}</p>-->
+<!--                <p><strong>Linkedin Url :</strong> {{ current_user.profile.linkedin }}</p>-->
+<!--                <p><strong>Facebook Url :</strong> {{ current_user.profile.facebook }}</p>-->
+<!--                {% else %}-->
+<!--        <h5>Please login to view profile!</h5>-->
+<!--                {% endif %}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; Подключение JS-файла Bootstrap (jQuery и Popper.js) &ndash;&gt;-->
+<!--    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+<!--</body>-->
+<!--</html>-->
 
 {% endblock %}
