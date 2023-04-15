@@ -57,6 +57,7 @@ def profile(username):
                            my_followers=my_followers
                            )
 
+
 @user_bp.route("/<int:follow_id>/follow", methods=['GET', 'POST'])
 @login_required
 def follow(follow_id):
@@ -65,6 +66,7 @@ def follow(follow_id):
     db.session.commit()
     flash('You have followed on this profile!', 'success')
     return redirect(request.referrer)
+
 
 @user_bp.route("/<int:unfollow_id>/unfollow", methods=['GET', 'POST'])
 @login_required
