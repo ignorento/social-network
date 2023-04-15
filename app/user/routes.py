@@ -5,7 +5,7 @@ from flask_login import current_user, login_required
 from app.user.forms import ProfileForm
 
 from .. import db
-from ..models import User, Post
+from ..models import User, Post, Follow
 from ..post.forms import PostForm
 
 
@@ -29,6 +29,7 @@ def blog():
 def profile(username):
     user = db.session.query(User).filter(User.username == username).first_or_404()
     form = ProfileForm()
+
     if form.validate_on_submit():
 
         user.profile.first_name = form.first_name.data
@@ -45,4 +46,31 @@ def profile(username):
         form.linkedin.data = user.profile.linkedin
         form.facebook.data = user.profile.facebook
         form.bio.data = user.profile.bio
-    return render_template('user/profile.html', user=user, form=form)
+
+    i_am_following = Follow.query.filter_by(follower_id=current_user.id).all()
+    my_followers = Follow.query.filter_by(following_id=current_user.id).all()
+
+    return render_template('user/profile.html',
+                           user=user,
+                           form=form,
+                           i_am_following=i_am_following,
+                           my_followers=my_followers
+                           )
+
+@user_bp.route("/<int:follow_id>/follow", methods=['GET', 'POST'])
+@login_required
+def follow(follow_id):
+    follow_on_user = Follow(follower_id=current_user.id, following_id=follow_id)
+    db.session.add(follow_on_user)
+    db.session.commit()
+    flash('You have followed on this profile!', 'success')
+    return redirect(request.referrer)
+
+@user_bp.route("/<int:unfollow_id>/unfollow", methods=['GET', 'POST'])
+@login_required
+def unfollow(unfollow_id):
+    unfollow_on_user = Follow.query.filter_by(follower_id=current_user.id, following_id=unfollow_id).first()
+    db.session.delete(unfollow_on_user)
+    db.session.commit()
+    flash('You have unfollowed on this profile!', 'warning')
+    return redirect(request.referrer)
