@@ -3,7 +3,7 @@ from hashlib import md5
 
 
 from app import db
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -31,10 +31,20 @@ class User(BaseModel, UserMixin):
     )
 
     # list of users that follow you
-    followers = db.relationship("Follow", backref="followee", foreign_keys="Follow.followee_id")
+    my_followers = db.relationship("Follow", backref="following", foreign_keys="Follow.following_id")
 
     # list of users that you follow
-    following = db.relationship("Follow", backref="follower", foreign_keys="Follow.follower_id")
+    i_following = db.relationship("Follow", backref="follower", foreign_keys="Follow.follower_id")
+
+    def is_following(self):
+        follower = db.session.query(Follow).filter(
+            Follow.following_id == self.id,
+            Follow.follower_id == current_user.id
+        ).first()
+        if follower:
+            return True
+        else:
+            return False
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
@@ -128,9 +138,9 @@ class Follow(db.Model):
         db.ForeignKey('user.id', name="fk_follows_follower_id"),
         primary_key=True
     )
-    followee_id = db.Column(
+    following_id = db.Column(
         db.Integer,
-        db.ForeignKey('user.id', name="fk_follows_followee_id"),
+        db.ForeignKey('user.id', name="fk_follows_following_id"),
         primary_key=True
     )
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
