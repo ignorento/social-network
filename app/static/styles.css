@@ -1,9 +1,9 @@
 /* Custom styles */
 
 body {
-    background-color: #F0F8FF !important; /* Задаем цвет фона в формате HEX (#ff0000 - красный) */
+    background-color: #F0F8FF  /* Задаем цвет фона в формате HEX (#ff0000 - красный) */
 }
-
+/*!important;*/
 /* CSS-код с настройками округления углов */
 .custom-rounded {
   border-radius: 20px; /* Измените значение радиуса на ваше усмотрение */
