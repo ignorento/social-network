@@ -48,7 +48,8 @@ def profile(username):
         form.facebook.data = user.profile.facebook
         form.bio.data = user.profile.bio
 
-    # i_am_following = Follow.query.filter_by(follower_id=current_user.id).all()  # также можно фильтровать фоловеров тут
+    # также можно фильтровать фоловеров тут
+    # i_am_following = Follow.query.filter_by(follower_id=current_user.id).all()
 
     # берем с модели list i_following и можем применить .following как following_id по реляции описаной в модели
     followings = [user.following for user in user.i_following]
