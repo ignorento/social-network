@@ -40,6 +40,7 @@ def profile(username):
         db.session.commit()
         flash('Your changes have been saved!', category="success")
         return redirect(url_for('user.profile', username=user.username))
+
     elif request.method == 'GET':
         form.first_name.data = user.profile.first_name
         form.last_name.data = user.profile.last_name
@@ -47,14 +48,17 @@ def profile(username):
         form.facebook.data = user.profile.facebook
         form.bio.data = user.profile.bio
 
-    i_am_following = Follow.query.filter_by(follower_id=current_user.id).all()
-    my_followers = Follow.query.filter_by(following_id=current_user.id).all()
+    # i_am_following = Follow.query.filter_by(follower_id=current_user.id).all()  # также можно фильтровать фоловеров тут
+
+    # берем с модели list i_following и можем применить .following как following_id по реляции описаной в модели
+    followings = [user.following for user in user.i_following]
+    followers = [user.follower for user in user.my_followers]
 
     return render_template('user/profile.html',
                            user=user,
                            form=form,
-                           i_am_following=i_am_following,
-                           my_followers=my_followers
+                           followings=followings,
+                           followers=followers
                            )
 
 
