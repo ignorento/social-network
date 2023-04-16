@@ -118,22 +118,27 @@
     <div class="container mt-4">
         <div class="row">
 
-<!--            С помощью модели -->
             <div class="col-md-5 bg-dark custom-rounded text-white p-4">
                 <h4>My followers</h4>
                 <hr>
-                {% for i in user.my_followers %}
-                <p> <img src="{{ user.query.get(i.follower_id).avatar(40) }}" class="rounded-circle mr-1">  &bull; {{ user.query.get(i.follower_id).username}}</p>
+                {% for follower in followers %}
+                <p>
+                    <a href="{{ url_for('user.profile', username=follower.username) }}">
+                    <img src="{{ follower.avatar(40) }}" class="rounded-circle mr-1"></a>
+                    &bull; {{ follower.username }}
+                </p>
                 {% endfor %}
             </div>
 
-<!--            С помощью переданніх роутов-->
             <div class="col-md-5 bg-dark custom-rounded text-white p-4 ms-4">
-                <h4>I am following</h4>
+                <h4>My followings</h4>
                 <hr>
-                {% for following in i_am_following %}
-                <p> <img src="{{ user.query.get(following.following_id).avatar(40) }}" class="rounded-circle mr-1"> &bull; {{ user.query.get(following.following_id).username}}</p>
-
+                {% for following in followings %}
+                <p>
+                    <a href="{{ url_for('user.profile', username=following.username) }}">
+                    <img src="{{ following.avatar(40) }}" class="rounded-circle mr-1"></a>
+                    &bull; {{ following.username}}
+                </p>
                 {% endfor %}
             </div>
 
