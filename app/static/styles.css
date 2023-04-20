@@ -1,0 +1,16 @@
+/* Custom styles */
+
+body {
+    background-color: #F0F8FF  /* Задаем цвет фона в формате HEX (#ff0000 - красный) */
+}
+/*!important;*/
+/* CSS-код с настройками округления углов */
+.custom-rounded {
+  border-radius: 20px; /* Измените значение радиуса на ваше усмотрение */
+}
+.custom-rounded-left {
+  border-radius: 20px 0 0 20px;
+}
+.custom-rounded-right {
+  border-radius: 0 20px 20px 0;
+}

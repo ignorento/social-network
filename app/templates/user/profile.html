@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+        {% if user == current_user %}
+        <h2 class="mb-12 ">My Profile</h2>
+        <div class="row">
+        {% else %}
+        <h2 class="mb-12 ">Profile - {{ user.username }}</h2>
+        <div class="row">
+        {% endif %}
+
+            <div class="col-md-4 bg-dark custom-rounded-left text-white p-4">
+                <img src="{{ user.avatar(128) }}" class="img-thumbnail mb-3" alt="">
+                <div>
+                    <h5>{{ user.username }}</h5>
+                    <p class="text-secondary">{{ user.email }}</p>
+                </div>
+                {% if user != current_user %}
+                    {% if user.is_following() %}
+                            <a href="{{ url_for('user.unfollow', unfollow_id=user.id) }}" class="btn btn-warning btn-sm">
+                                Unfollow
+                            </a>
+<!--                        <button type="submit" class="btn btn-warning btn-sm">Unfollow</button>-->
+                        <p></p>
+                    {% else %}
+                        <a href="{{ url_for('user.follow', follow_id=user.id) }}" class="btn btn-success btn-sm">
+                            Follow
+                        </a>
+                            <p></p>
+<!--  пример кнопки в html   <a href="#">Follow</a>-->
+                    {% endif %}
+                {% endif %}
+                 <p class="small">Last seen: {{ user.profile.last_seen.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            </div>
+
+            <div class="col-md-8 bg-dark custom-rounded-right text-white p-4">
+                {% if user == current_user %}
+                <form method="post" action="{{ url_for('user.profile', username=user.username) }}">
+                    {{ form.csrf_token }}
+                    <div class="form-group row">
+                        <label for="inputFirstName" class="col-sm-2 col-form-label">
+                            <strong>First Name :</strong>
+                        </label>
+                        <div class="col-sm-10">
+                            {{ form.first_name(class="form-control bg-dark text-white", id="inputFirstName") }}
+                            {% for error in form.first_name.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputLastName" class="col-sm-2 col-form-label">
+                            <strong>Last Name :</strong>
+                        </label>
+                        <div class="col-sm-10">
+                            {{ form.last_name(class="form-control bg-dark text-white", id="inputLastName") }}
+                            {% for error in form.last_name.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputFacebook" class="col-sm-2 col-form-label">
+                            <strong>Facebook :</strong>
+                        </label>
+                        <div class="col-sm-10">
+                            {{ form.facebook(class="form-control bg-dark text-white", id="inputFacebook") }}
+                            {% for error in form.facebook.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group row ">
+                        <label for="inputLinkedin" class="col-sm-2 col-form-label ">
+                            <strong>LinkedIn :</strong>
+                        </label>
+                        <div class="col-sm-10">
+                            {{ form.linkedin(class="form-control bg-dark text-white", id="inputLinkedin") }}
+                            {% for error in form.linkedin.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputBio" class="col-sm-2 col-form-label">
+                            <strong>About Me :</strong>
+                        </label>
+                        <div class="col-sm-10">
+                            {{ form.bio(class="form-control bg-dark text-white", id="inputBio") }}
+                            {% for error in form.bio.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">Save</button>
+                </form>
+                {% else %}
+<!--                Если нужно будет вспомнить логин пароль к профайду-->
+<!--                <p><strong>Login :</strong> {{ current_user.username }} </p>-->
+<!--                <p><strong>Email :</strong> {{ current_user.email }} </p>-->
+
+                <p><strong>First Name :</strong> {{ user.profile.first_name }}</p>
+                <p><strong>Last Name :</strong> {{ user.profile.last_name }}</p>
+                <p><strong>Facebook Url :</strong> {{ user.profile.facebook }}</p>
+                <p><strong>Linkedin Url :</strong> {{ user.profile.linkedin }}</p>
+                <p><strong>About Me :</strong> {{ user.profile.bio }}</p>
+
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+{% if user == current_user %}
+<div class="d-flex justify-content-between align-items-center">
+    <div class="container mt-4">
+        <div class="row">
+
+            <div class="col-md-5 bg-dark custom-rounded text-white p-4">
+                <h4>My followers</h4>
+                <hr>
+                {% for follower in followers %}
+                <p>
+                    <a href="{{ url_for('user.profile', username=follower.username) }}">
+                    <img src="{{ follower.avatar(40) }}" class="rounded-circle mr-1"></a>
+                    &bull; {{ follower.username }}
+                </p>
+                {% endfor %}
+            </div>
+
+            <div class="col-md-5 bg-dark custom-rounded text-white p-4 ms-4">
+                <h4>My followings</h4>
+                <hr>
+                {% for following in followings %}
+                <p>
+                    <a href="{{ url_for('user.profile', username=following.username) }}">
+                    <img src="{{ following.avatar(40) }}" class="rounded-circle mr-1"></a>
+                    &bull; {{ following.username}}
+                </p>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!--<body>-->
+<!--    <div class="container mt-5">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-6 bg-dark custom-rounded text-white p-4">-->
+<!--                <h2>My Followers</h2>-->
+<!--                <hr>-->
+<!--                {% if current_user.is_authenticated %}-->
+<!--                <p><strong>Login :</strong> {{ current_user.username }} </p>-->
+<!--                <p><strong>Email :</strong> {{ current_user.email }} </p>-->
+<!--                <p><strong>First Name :</strong> {{ current_user.profile.first_name }}</p>-->
+<!--                <p><strong>Last Name :</strong> {{ current_user.profile.last_name }}</p>-->
+<!--                <p><strong>Linkedin Url :</strong> {{ current_user.profile.linkedin }}</p>-->
+<!--                <p><strong>Facebook Url :</strong> {{ current_user.profile.facebook }}</p>-->
+<!--                {% else %}-->
+<!--        <h5>Please login to view profile!</h5>-->
+<!--                {% endif %}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</body>-->
+
+
+{% endblock %}

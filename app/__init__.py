@@ -18,6 +18,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
+    login_manager.login_view = "auth.login"
 
     from .auth import auth_bp
     app.register_blueprint(auth_bp)
@@ -27,6 +28,12 @@ def create_app():
 
     from .faker import faker_bp
     app.register_blueprint(faker_bp)
+
+    from .user import user_bp
+    app.register_blueprint(user_bp)
+
+    from .post import post_bp
+    app.register_blueprint(post_bp)
 
     from . import models
 
