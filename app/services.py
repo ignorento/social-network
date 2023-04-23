@@ -14,13 +14,19 @@ class UserService:
         return user
 
     def create(self, **kwargs):
-        user = User(username=kwargs.get('username'), email=kwargs.get('email'))
+        user = User(username=kwargs.get('username'), email=kwargs.get('email')) # data
         user.set_password(kwargs.get('password'))
 
         db.session.add(user)
         db.session.commit()
 
-        profile = Profile(user_id=user.id)
+        profile = Profile(
+            user_id=user.id,
+            first_name=kwargs.get('first_name'),
+            last_name=kwargs.get('last_name'),
+            linkedin=kwargs.get('linkedin'),
+            facebook=kwargs.get('facebook')
+        )
         db.session.add(profile)
         db.session.commit()
 

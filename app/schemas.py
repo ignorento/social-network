@@ -31,11 +31,6 @@ class ProfileSchema(BaseSchema):
         model = Profile
 
 
-class ProfileSchema(BaseSchema):
-    class Meta:
-        model = Profile
-
-
 class UserSchema(BaseSchema):
     class Meta:
         model = User

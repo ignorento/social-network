@@ -4,6 +4,10 @@ from .forms import LoginForm, RegisterForm
 from flask_login import current_user, login_user, logout_user
 from ..models import User, Profile
 from .. import db
+from ..services import UserService
+
+
+user_service = UserService()
 
 
 @auth_bp.route('/')
@@ -40,11 +44,6 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        user = User(
-            username=form.username.data,
-            email=form.email.data
-        )
-        user.set_password(form.password.data)
 
         username_in_db = User.query.filter_by(username=form.username.data).first()
         email_in_db = User.query.filter_by(username=form.username.data).first()
@@ -57,19 +56,36 @@ def register():
             flash("This username is taken, please select another!", category="error")
             return render_template("auth/register.html", form=form)
 
-        db.session.add(user)
-        db.session.commit()
+        user_service.create(
+            username=form.username.data,
+            email=form.email.data,
+            password=form.password.data,
 
-        profile = Profile(
-            user_id=user.id,
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             linkedin=form.linkedin.data,
             facebook=form.facebook.data
         )
-
-        db.session.add(profile)
-        db.session.commit()
+        # Рефактор теперь єто все перенесено в services
+        # user = User(
+        #     username=form.username.data,
+        #     email=form.email.data
+        # )
+        # user.set_password(form.password.data)
+        #
+        # db.session.add(user)
+        # db.session.commit()
+        #
+        # profile = Profile(
+        #     user_id=user.id,
+        #     first_name=form.first_name.data,
+        #     last_name=form.last_name.data,
+        #     linkedin=form.linkedin.data,
+        #     facebook=form.facebook.data
+        # )
+        #
+        # db.session.add(profile)
+        # db.session.commit()
 
         flash(f"Successfully registered {form.data['username']}! Profile was created", category="success")
 
