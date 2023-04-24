@@ -19,6 +19,7 @@ class BaseOpts(SQLAlchemyAutoSchemaOpts):
             meta.include_fk = True
         super(BaseOpts, self).__init__(meta, ordered=ordered)
 
+
 class BaseSchema(SQLAlchemyAutoSchema):
     """
     Base configured schema class

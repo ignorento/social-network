@@ -14,7 +14,7 @@ class UserService:
         return user
 
     def create(self, **kwargs):
-        user = User(username=kwargs.get('username'), email=kwargs.get('email')) # data
+        user = User(username=kwargs.get('username'), email=kwargs.get('email'))  # data
         user.set_password(kwargs.get('password'))
 
         db.session.add(user)
