@@ -11,18 +11,18 @@ user_service = UserService()
 class UsersResource(Resource):
     def get(self):
 
-        ordered = request.args.get('ordered', type=bool)
+        ordered = request.args.get('ordered', type=bool)  # cортировка insomnia Query параметрі чтоб отсортировать
 
         users_query = db.session.query(User)
         if ordered:
-            users_query = users_query.order_by(User.created_at.asc())
+            users_query = users_query.order_by(User.created_at.asc())  # по когда созданому сортирует
 
         users = users_query.all()
         return jsonify(UserSchema().dump(users, many=True))
 
     def post(self):
         json_data = request.get_json()
-        user = user_service.create(**json_data)
+        user = user_service.create(**json_data)  # json_data without *
 
         response = jsonify(UserSchema().dump(user, many=False))
         response.status_code = 201
@@ -36,7 +36,7 @@ class UserResource(Resource):
 
     def put(self, user_id):
         json_data = request.get_json()
-        json_data['id'] = user_id
+        json_data['id'] = user_id  # чтоб всегда подставляло user_id в id а не что заходит в поле id
 
         user = user_service.update(json_data)
         return jsonify(UserSchema().dump(user, many=False))
