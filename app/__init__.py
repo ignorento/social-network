@@ -35,6 +35,9 @@ def create_app():
     from .post import post_bp
     app.register_blueprint(post_bp)
 
+    from .api import api_bp
+    app.register_blueprint(api_bp)
+
     from . import models
 
     @login_manager.user_loader
