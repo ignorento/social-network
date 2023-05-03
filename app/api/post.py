@@ -8,6 +8,7 @@ from app.services import PostService
 
 post_service = PostService()
 
+
 class PostsResource(Resource):
     def get(self):
         """
@@ -32,7 +33,6 @@ class PostsResource(Resource):
         response.status_code = 201
 
         return response
-
 
 
 class PostResource(Resource):

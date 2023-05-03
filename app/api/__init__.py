@@ -13,4 +13,3 @@ api.add_resource(UserResource, '/users/<int:user_id>', endpoint="users_details")
 
 api.add_resource(PostsResource, '/posts', endpoint="posts_list")
 api.add_resource(PostResource, '/posts/<int:post_id>', endpoint="posts_details")
-

@@ -43,4 +43,3 @@ class UserSchema(BaseSchema):
 class PostSchema(BaseSchema):
     class Meta:
         model = Post
-

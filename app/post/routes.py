@@ -9,6 +9,7 @@ from app.services import PostService
 
 post_service = PostService()
 
+
 @post_bp.route('/create', methods=['GET', 'POST'])
 @login_required
 def create():
