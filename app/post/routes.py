@@ -5,6 +5,9 @@ from app.models import Post, Like, Dislike
 from flask import redirect, url_for, render_template, flash, request, abort
 from flask_login import login_required, current_user
 
+from app.services import PostService
+
+post_service = PostService()
 
 @post_bp.route('/create', methods=['GET', 'POST'])
 @login_required
@@ -13,10 +16,16 @@ def create():
 
     if request.method == 'POST':
         if form.validate_on_submit():
-            post = Post(title=form.title.data, content=form.content.data, author=current_user)
-
-            db.session.add(post)
-            db.session.commit()
+            post_service.create(
+                title=form.title.data,
+                content=form.content.data,
+                author_id=current_user.id
+            )
+            # Рефактор теперь все происходит в сервисах
+            # post = Post(title=form.title.data, content=form.content.data, author=current_user)
+            #
+            # db.session.add(post)
+            # db.session.commit()
             flash('Your post has been created!', 'success')
         else:
             title = form.title.data
