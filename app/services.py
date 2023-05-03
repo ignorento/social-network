@@ -1,6 +1,6 @@
 from app import db
-from app.models import User, Profile
-from app.schemas import UserSchema
+from app.models import User, Profile, Post
+from app.schemas import UserSchema, PostSchema
 
 
 class UserService:
@@ -13,7 +13,7 @@ class UserService:
         user = db.session.query(User).filter(User.username == username).first_or_404()
         return user
 
-    def create(self, **kwargs):
+    def create(self, **kwargs):  # data
         user = User(username=kwargs.get('username'), email=kwargs.get('email'))  # data
         user.set_password(kwargs.get('password'))
 
@@ -53,3 +53,31 @@ class UserService:
         db.session.commit()
 
         return True
+
+
+class PostService:
+
+    def get_by_id(self, post_id):
+        post = db.session.query(Post).filter(Post.id == post_id).first_or_404()
+        return post
+
+    def update(self, data):
+        my_post = PostSchema().load(data)
+        db.session.add(my_post)
+        db.session.commit()
+
+        return my_post
+
+    def delete(self, post_id):
+        post = self.get_by_id(post_id)
+        db.session.delete(post)
+        db.session.commit()
+        return True
+
+    def create(self, **kwargs):  # data
+        post = Post(title=kwargs.get('title'), content=kwargs.get('content'), author_id=kwargs.get('author_id'))  # data
+
+        db.session.add(post)
+        db.session.commit()
+
+        return post
