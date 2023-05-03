@@ -17,9 +17,8 @@ class ProfileResource(Resource):
     def put(self, user_id=None):
         json_data = request.get_json()
         json_data['user_id'] = user_id
-        # ищем author_id нашего поста
+
         profile_id = db.session.query(Profile.id).filter(Profile.user_id == user_id).scalar()
-        # перезаписіваем author_id если вдруг ктото его изменил
         json_data['id'] = profile_id
 
         profile = profile_service.update(json_data)
