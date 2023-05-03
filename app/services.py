@@ -1,6 +1,6 @@
 from app import db
 from app.models import User, Profile, Post
-from app.schemas import UserSchema, PostSchema
+from app.schemas import UserSchema, PostSchema, ProfileSchema
 
 
 class UserService:
@@ -29,7 +29,6 @@ class UserService:
         )
         db.session.add(profile)
         db.session.commit()
-
         return user
 
     def update(self, data):
@@ -40,7 +39,6 @@ class UserService:
         user = UserSchema(exclude=('password',)).load(data)
         db.session.add(user)
         db.session.commit()
-
         return user
 
     def delete(self, user_id):
@@ -51,7 +49,6 @@ class UserService:
 
         db.session.delete(user)
         db.session.commit()
-
         return True
 
 
@@ -65,7 +62,6 @@ class PostService:
         my_post = PostSchema().load(data)
         db.session.add(my_post)
         db.session.commit()
-
         return my_post
 
     def delete(self, post_id):
@@ -79,5 +75,17 @@ class PostService:
 
         db.session.add(post)
         db.session.commit()
-
         return post
+
+
+class ProfileService:
+
+    def get_by_id(self, user_id):
+        profile = db.session.query(Profile).filter(Profile.user_id == user_id).first_or_404()
+        return profile
+
+    def update(self, data):
+        profile = ProfileSchema().load(data)
+        db.session.add(profile)
+        db.session.commit()
+        return profile
