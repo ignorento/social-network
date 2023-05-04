@@ -52,3 +52,7 @@ class DisLikeResource(Resource):
     def get(self, dislike_id=None):
         dislike = dislike_service.get_by_id(dislike_id)
         return jsonify(DisLikeSchema().dump(dislike, many=False))
+
+    def delete(self, dislike_id=None):
+        status = dislike_service.delete(dislike_id)
+        return jsonify(status=status)
