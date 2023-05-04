@@ -1,5 +1,5 @@
 from app import db
-from app.models import User, Profile, Post
+from app.models import User, Profile, Post, Like, Dislike
 from app.schemas import UserSchema, PostSchema, ProfileSchema
 
 
@@ -89,3 +89,31 @@ class ProfileService:
         db.session.add(profile)
         db.session.commit()
         return profile
+
+
+class LikeService:
+
+    def create(self, **kwargs):
+        like = Like(user_id=kwargs.get('user_id'), post_id=kwargs.get('post_id'))
+
+        db.session.add(like)
+        db.session.commit()
+        return like
+
+    def get_by_id(self, like_id):
+        like = db.session.query(Like).filter(Like.id == like_id).first_or_404()
+        return like
+
+
+class DislikeService:
+
+    def create(self, **kwargs):
+        dislike = Dislike(user_id=kwargs.get('user_id'), post_id=kwargs.get('post_id'))
+
+        db.session.add(dislike)
+        db.session.commit()
+        return dislike
+
+    def get_by_id(self, dislike_id):
+        dislike = db.session.query(Dislike).filter(Dislike.id == dislike_id).first_or_404()
+        return dislike
