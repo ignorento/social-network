@@ -54,3 +54,7 @@ class LikeResource(Resource):
     def get(self, like_id=None):
         like = like_service.get_by_id(like_id)
         return jsonify(LikeSchema().dump(like, many=False))
+
+    def delete(self, like_id=None):
+        status = like_service.delete(like_id)
+        return jsonify(status=status)
