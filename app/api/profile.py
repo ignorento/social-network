@@ -23,3 +23,15 @@ class ProfileResource(Resource):
 
         profile = profile_service.update(json_data)
         return jsonify(ProfileSchema().dump(profile, many=False))
+
+
+class ProfilesResource(Resource):
+    def get(self):
+        ordered = request.args.get('user_id', type=bool)
+
+        profiles_query = db.session.query(Profile)
+        if ordered:
+            profiles_query = profiles_query.order_by(Profile.user_id.asc())
+
+        profiles = profiles_query.all()
+        return jsonify(ProfileSchema().dump(profiles, many=True))
