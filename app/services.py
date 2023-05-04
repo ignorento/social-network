@@ -104,6 +104,12 @@ class LikeService:
         like = db.session.query(Like).filter(Like.id == like_id).first_or_404()
         return like
 
+    def delete(self, like_id):
+        like = self.get_by_id(like_id)
+        db.session.delete(like)
+        db.session.commit()
+        return True
+
 
 class DislikeService:
 
@@ -117,3 +123,9 @@ class DislikeService:
     def get_by_id(self, dislike_id):
         dislike = db.session.query(Dislike).filter(Dislike.id == dislike_id).first_or_404()
         return dislike
+
+    def delete(self, dislike_id):
+        dislike = self.get_by_id(dislike_id)
+        db.session.delete(dislike)
+        db.session.commit()
+        return True
