@@ -4,6 +4,7 @@ from app import db
 from app.models import User
 from app.schemas import UserSchema
 from app.services import UserService
+from flask_jwt_extended import jwt_required
 
 user_service = UserService()
 
@@ -20,6 +21,7 @@ class UsersResource(Resource):
         users = users_query.all()
         return jsonify(UserSchema().dump(users, many=True))
 
+    @jwt_required()
     def post(self):
         json_data = request.get_json()
         user = user_service.create(**json_data)  # json_data without *
@@ -30,6 +32,8 @@ class UsersResource(Resource):
 
 
 class UserResource(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self, user_id=None):
         user = user_service.get_by_id(user_id)
         return jsonify(UserSchema().dump(user, many=False))
