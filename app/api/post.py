@@ -3,6 +3,7 @@ from app import db
 from app.models import Post
 from app.schemas import PostSchema
 from flask_restful import Resource
+from flask_jwt_extended import jwt_required
 
 from app.services import PostService
 
@@ -10,6 +11,7 @@ post_service = PostService()
 
 
 class PostsResource(Resource):
+    # @jwt_required()
     def get(self):
         """
         Постьі все или все конкретного автора
@@ -25,6 +27,7 @@ class PostsResource(Resource):
 
         return jsonify(PostSchema().dump(posts, many=True))
 
+    @jwt_required()
     def post(self):
         json_data = request.get_json()
         post = post_service.create(**json_data)
@@ -36,6 +39,8 @@ class PostsResource(Resource):
 
 
 class PostResource(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self, post_id=None):
         post = post_service.get_by_id(post_id)
         return jsonify(PostSchema().dump(post, many=False))
