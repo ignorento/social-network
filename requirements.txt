@@ -32,3 +32,4 @@ SQLAlchemy==2.0.8
 typing_extensions==4.5.0
 Werkzeug==2.2.3
 WTForms==3.0.1
+flask-jwt-extended==4.4.4
