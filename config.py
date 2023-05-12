@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+basedir = os.path.join(os.path.dirname(__file__))
 
 
 class Config:
