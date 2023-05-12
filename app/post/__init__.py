@@ -4,14 +4,14 @@ import pandas as pd
 from .. import db
 from ..models import Like, Dislike, User, Post
 from sqlalchemy import func
-from sqlalchemy.sql import case
+import click
 
 from flask import Blueprint
 
 post_bp = Blueprint('post', __name__, url_prefix='/post')
 
 from . import routes  # noqa
-import click
+
 
 @post_bp.cli.command('exctract_posts')
 @click.argument('user_id', type=int)
@@ -37,5 +37,3 @@ def exctract_posts(user_id):
         print(f'File {user_id}_posts.csv successfully created. Nice work!')
     else:
         print(f"We don't have user id - {user_id}. Please try again!")
-
-

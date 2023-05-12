@@ -45,4 +45,4 @@ def exctract_users():
     # print(users_info)
     df = pd.DataFrame(users_info, columns=['username', 'email', 'full_name', 'кількість постів'])
     df.to_csv(Path(config.basedir)/'users.csv')
-    print(f'File users.csv successfully created. Nice work!')
+    print('File users.csv successfully created. Nice work!')
