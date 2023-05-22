@@ -26,8 +26,8 @@ def user_command():
     print(user_info)
 
 
-@user_bp.cli.command('exctract_users')
-def exctract_users():
+@user_bp.cli.command('extract_users')
+def extract_users():
 
     users_info = (
         db.session.query(

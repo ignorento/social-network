@@ -13,9 +13,9 @@ post_bp = Blueprint('post', __name__, url_prefix='/post')
 from . import routes  # noqa
 
 
-@post_bp.cli.command('exctract_posts')
+@post_bp.cli.command('extract_posts')
 @click.argument('user_id', type=int)
-def exctract_posts(user_id):
+def extract_posts(user_id):
     my_user = db.session.query(User).filter(User.id == user_id).first()
     if my_user:
         my_posts = (
@@ -31,9 +31,10 @@ def exctract_posts(user_id):
             .group_by(Post.title, Post.created_at)
             .all()
         )
+        user_username = my_user.username
         # print(my_posts)
         df = pd.DataFrame(my_posts, columns=['Post Title', 'Likes count', 'Dislikes count', 'Post Created at'])
-        df.to_csv(Path(config.basedir) / f'{user_id}_posts.csv')
-        print(f'File {user_id}_posts.csv successfully created. Nice work!')
+        df.to_csv(Path(config.basedir) / f'{user_username}_posts.csv')
+        print(f'File {user_username}_posts.csv successfully created. Nice work!')
     else:
         print(f"We don't have user id - {user_id}. Please try again!")
